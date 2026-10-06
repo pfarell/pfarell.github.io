@@ -277,4 +277,18 @@
     requestAnimationFrame(measure);
     requestAnimationFrame(physics);
   }
+  /* ---------- polaroid real <-> pixel switch ---------- */
+  document.querySelectorAll(".polaroid[data-switch]").forEach(function (p) {
+    function toggle() {
+      var flipped = p.classList.toggle("flipped");
+      p.setAttribute("aria-pressed", flipped ? "true" : "false");
+    }
+    p.addEventListener("click", toggle);
+    p.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggle();
+      }
+    });
+  });
 })();

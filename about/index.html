@@ -54,28 +54,55 @@
   <main id="page">
 
     <!-- ============ polaroids ============ -->
-    <section class="container section" data-reveal>
+    <section class="section" data-reveal>
       <div class="polaroid-strip">
-        <div class="polaroid" style="transform: rotate(-6deg) translateY(6px)">
-          <img src="../assets/img/portrait-real.jpg" alt="Praditya Farell" onerror="this.parentElement.style.display='none'">
+        <div class="polaroid" data-switch role="button" tabindex="0" aria-pressed="false" aria-label="Photo of Farell — activate to switch to pixel art" style="transform: rotate(-6deg) translateY(6px)">
+          <span class="pv">
+            <img class="a" src="../assets/img/polaroids/portrait-real.webp" alt="Praditya Farell">
+            <img class="b pix" src="../assets/img/polaroids/portrait-pixel.webp" alt="" loading="lazy">
+          </span>
+          <span class="swap-hint" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4"/><path d="M3 8h13"/><path d="m17 20 4-4-4-4"/><path d="M21 16H8"/></svg></span>
         </div>
-        <div class="polaroid" style="transform: rotate(6deg) translateY(-2px); margin-left:-4px">
-          <img src="../assets/img/portrait-pixel.png" alt="Pixel-art portrait of Praditya Farell" style="image-rendering: pixelated" onerror="this.parentElement.style.display='none'">
+        <div class="polaroid" data-switch role="button" tabindex="0" aria-pressed="false" aria-label="Porsche 963 at the museum — activate to switch to pixel art" style="transform: rotate(5deg) translateY(-2px); margin-left:-4px">
+          <span class="pv">
+            <img class="a" src="../assets/img/polaroids/porsche-museum-real.webp" alt="Porsche 963 race car at the museum">
+            <img class="b pix" src="../assets/img/polaroids/porsche-museum-pixel.webp" alt="" loading="lazy">
+          </span>
+          <span class="swap-hint" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4"/><path d="M3 8h13"/><path d="m17 20 4-4-4-4"/><path d="M21 16H8"/></svg></span>
         </div>
-        <div class="polaroid" style="transform: rotate(-4deg) translateY(-6px); margin-left:-4px">
-          <img src="../assets/img/generated/scene1-sunset-lake.webp" alt="Pixel-art scene: mountain lake at sunset" style="image-rendering: pixelated">
+        <div class="polaroid" data-switch role="button" tabindex="0" aria-pressed="false" aria-label="Black Porsche 911 Turbo S — activate to switch to pixel art" style="transform: rotate(-4deg) translateY(-6px); margin-left:-4px">
+          <span class="pv">
+            <img class="a" src="../assets/img/polaroids/porsche-turbo-real.webp" alt="Black Porsche 911 Turbo S">
+            <img class="b pix" src="../assets/img/polaroids/porsche-turbo-pixel.webp" alt="" loading="lazy">
+          </span>
+          <span class="swap-hint" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4"/><path d="M3 8h13"/><path d="m17 20 4-4-4-4"/><path d="M21 16H8"/></svg></span>
         </div>
-        <div class="polaroid" style="transform: rotate(7deg) translateY(-10px); margin-left:-4px">
-          <img src="../assets/img/generated/scene2-night-city.webp" alt="Pixel-art scene: neon city street at night" style="image-rendering: pixelated">
+        <div class="polaroid" data-switch role="button" tabindex="0" aria-pressed="false" aria-label="Indianapolis at dusk — activate to switch to pixel art" style="transform: rotate(7deg) translateY(-10px); margin-left:-4px">
+          <span class="pv">
+            <img class="a" src="../assets/img/polaroids/indy-dusk-real.webp" alt="Indianapolis skyline at dusk across the river">
+            <img class="b pix" src="../assets/img/polaroids/indy-dusk-pixel.webp" alt="" loading="lazy">
+          </span>
+          <span class="swap-hint" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4"/><path d="M3 8h13"/><path d="m17 20 4-4-4-4"/><path d="M21 16H8"/></svg></span>
         </div>
-        <div class="polaroid" style="transform: rotate(-5deg) translateY(4px); margin-left:-4px">
-          <img src="../assets/img/generated/scene5-satellite.webp" alt="Pixel-art scene: satellite orbiting Earth at night" style="image-rendering: pixelated">
+        <div class="polaroid" data-switch role="button" tabindex="0" aria-pressed="false" aria-label="Mountains — activate to switch to pixel art" style="transform: rotate(-5deg) translateY(4px); margin-left:-4px">
+          <span class="pv">
+            <img class="a" src="../assets/img/polaroids/mountains-real.webp" alt="Snow-capped mountains reflected in a lake">
+            <img class="b pix" src="../assets/img/polaroids/mountains-pixel.webp" alt="" loading="lazy">
+          </span>
+          <span class="swap-hint" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4"/><path d="M3 8h13"/><path d="m17 20 4-4-4-4"/><path d="M21 16H8"/></svg></span>
         </div>
-        <div class="polaroid" style="transform: rotate(6deg) translateY(0); margin-left:-4px">
-          <img src="../assets/img/generated/scene3-moon-ocean.webp" alt="Pixel-art scene: ocean waves under a full moon" style="image-rendering: pixelated">
+        <div class="polaroid" data-switch role="button" tabindex="0" aria-pressed="false" aria-label="Purdue University — activate to switch to pixel art" style="transform: rotate(6deg) translateY(0); margin-left:-4px">
+          <span class="pv">
+            <img class="a" src="../assets/img/polaroids/purdue-real.webp" alt="Purdue University Boilermakers mark">
+            <img class="b pix" src="../assets/img/polaroids/purdue-pixel.webp" alt="" loading="lazy">
+          </span>
+          <span class="swap-hint" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4"/><path d="M3 8h13"/><path d="m17 20 4-4-4-4"/><path d="M21 16H8"/></svg></span>
         </div>
-        <div class="polaroid" style="transform: rotate(-8deg) translateY(2px); margin-left:-4px">
-          <img src="../assets/img/generated/scene6-observatory.webp" alt="Pixel-art scene: observatory under a starry sky" style="image-rendering: pixelated">
+        <div class="polaroid static" style="transform: rotate(-8deg) translateY(2px); margin-left:-4px">
+          <span class="pv"><img class="pix" src="../assets/img/polaroids/batman.webp" alt="Pixel-art Batman cowl on yellow"></span>
+        </div>
+        <div class="polaroid static" style="transform: rotate(4deg) translateY(-4px); margin-left:-4px">
+          <span class="pv"><img class="pix" src="../assets/img/polaroids/satellite.webp" alt="Pixel-art satellite orbiting Earth at night"></span>
         </div>
       </div>
     </section>
@@ -239,7 +266,7 @@
         <h3 class="section-label">Education</h3>
         <div class="panel rows-panel">
           <div class="row-item">
-            <span class="row-logo">P</span>
+            <span class="row-logo"><img src="../assets/img/logos/purdue.svg" alt="Purdue University"></span>
             <span class="row-main">
               <span class="row-title">Purdue University</span>
               <span class="row-sub">Artificial Intelligence</span>
@@ -255,28 +282,28 @@
         <h3 class="section-label">Certifications</h3>
         <div class="panel rows-panel">
           <div class="row-item">
-            <span class="row-logo" style="background:#232f3e;border-color:#232f3e;color:#ffffff;font-size:10px;letter-spacing:0.02em">aws</span>
+            <span class="row-logo"><img src="../assets/img/logos/aws.svg" alt="Amazon Web Services"></span>
             <span class="row-main">
               <span class="row-title">AWS Certified Machine Learning – Specialty (MLS-C01): Data Engineering</span>
               <span class="row-sub">Amazon Web Services · Oct 2025</span>
             </span>
           </div>
           <div class="row-item">
-            <span class="row-logo" style="color:#0a66c2;font-size:14px">in</span>
+            <span class="row-logo"><img src="../assets/img/logos/microsoft.svg" alt="Microsoft"></span>
             <span class="row-main">
               <span class="row-title">Career Essentials in Generative AI</span>
               <span class="row-sub">Microsoft &amp; LinkedIn · Oct 2025 · Prompt Engineering, Responsible AI</span>
             </span>
           </div>
           <div class="row-item">
-            <span class="row-logo" style="color:#4285f4;font-size:17px">G</span>
+            <span class="row-logo"><img src="../assets/img/logos/google.svg" alt="Google"></span>
             <span class="row-main">
               <span class="row-title">Develop AI-Powered Prototypes in Google AI Studio</span>
               <span class="row-sub">Google · Sep 2025</span>
             </span>
           </div>
           <div class="row-item">
-            <span class="row-logo" style="color:#0a66c2;font-size:14px">in</span>
+            <span class="row-logo"><img src="../assets/img/logos/linkedin.svg" alt="LinkedIn"></span>
             <span class="row-main">
               <span class="row-title">What Is Generative AI?</span>
               <span class="row-sub">LinkedIn · Sep 2025 · Artificial Intelligence, Generative AI Tools</span>

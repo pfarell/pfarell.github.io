@@ -13,7 +13,7 @@ directly from its live CSS and screenshots, then personalised.
 |---|---|
 | `index.html` | Hero with the interactive pixel-art portrait, philosophy card stack, featured projects, Let's Connect / footer |
 | `projects/index.html` | "Things I've Made" — OpenVoice and Ripple cards with real app screenshots |
-| `about/index.html` | Polaroid strip, bio, What I do, draggable Stack, Education, Inspiration quote |
+| `about/index.html` | Interactive real↔pixel polaroid strip (photos, Porsche, Indianapolis, mountains, Purdue, Batman), bio, What I do, Skills, draggable Stack, Experience, Education, Certifications, Inspiration quote |
 
 Old flat links (`projects.html`, `about.html`) still exist as redirect stubs.
 

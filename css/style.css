@@ -1283,35 +1283,83 @@ html.dark .polaroid {
 .polaroid-strip {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 76px 0 8px;
+  justify-content: flex-start;
+  padding: 76px 16px 8px;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
 }
 
+/* Centre the group when it fits, but never clip the first/last card when
+   the strip overflows (the old `justify-content: center` cut both ends). */
+.polaroid-strip .polaroid:first-child { margin-left: auto; }
+.polaroid-strip .polaroid:last-child { margin-right: auto; }
+
 .polaroid-strip::-webkit-scrollbar { display: none; }
 
 .polaroid {
   flex: none;
+  position: relative;
   background: #fff;
   border-radius: 14px;
   padding: 7px 7px 26px;
   box-shadow: var(--shadow-4);
   transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.polaroid.static { cursor: default; }
+
+.polaroid .pv {
+  position: relative;
+  display: block;
+  width: 148px;
+  height: 186px;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .polaroid img {
-  width: 148px;
-  height: 186px;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 8px;
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+.polaroid img.pix { image-rendering: pixelated; }
+
+.polaroid .b { opacity: 0; transform: scale(1.06); }
+
+.polaroid.flipped .b { opacity: 1; transform: scale(1); }
+
+.polaroid.flipped .a { opacity: 0; transform: scale(0.98); }
+
+.polaroid .swap-hint {
+  position: absolute;
+  right: 12px;
+  bottom: 27px;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
+  color: var(--muted-fg);
+  box-shadow: var(--shadow-1);
+  transition: transform 0.25s ease;
+}
+
+.polaroid:hover .swap-hint { transform: translateY(-2px) rotate(8deg); }
+
+.polaroid.static .swap-hint { display: none; }
 
 .polaroid:hover {
   transform: rotate(0deg) translateY(-8px) scale(1.04) !important;
   z-index: 10;
-  position: relative;
 }
 
 .bio-card {
@@ -1549,6 +1597,14 @@ html.dark .polaroid {
   font-size: 15px;
   color: var(--primary-7);
   flex: none;
+  overflow: hidden;
+}
+
+.row-logo img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
 }
 
 .row-main {
