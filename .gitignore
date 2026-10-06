@@ -1,0 +1,12 @@
+# evidence + reference material — not part of the published site
+reference/
+shots/
+
+# local tool output
+__pycache__/
+*.pyc
+
+# OS junk
+Thumbs.db
+desktop.ini
+.DS_Store

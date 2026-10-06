@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Praditya Farell — Artificial Intelligence @ Purdue</title>
+  <meta name="description" content="Praditya Farell — studying Artificial Intelligence at Purdue University. I build local-first AI tools and data-driven products, like OpenVoice and Ripple.">
+  <link rel="canonical" href="https://pfarell.github.io/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Praditya Farell">
+  <meta property="og:title" content="Praditya Farell — AI @ Purdue">
+  <meta property="og:description" content="Local-first AI tools and data-driven products — OpenVoice and Ripple. Studying Artificial Intelligence at Purdue.">
+  <meta property="og:url" content="https://pfarell.github.io/">
+  <meta property="og:image" content="https://pfarell.github.io/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Praditya Farell — AI @ Purdue">
+  <meta name="twitter:description" content="Local-first AI tools and data-driven products — OpenVoice and Ripple.">
+  <meta name="twitter:image" content="https://pfarell.github.io/assets/img/og.png">
+  <meta name="theme-color" content="#f8f9f8">
+  <link rel="icon" href="assets/img/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+  <script>(function(){document.documentElement.classList.add("js");try{var p=localStorage.getItem("theme-preference")||"system";var d=p==="dark"||(p==="system"&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d);}catch(e){}})();</script>
+  <link rel="stylesheet" href="assets/fonts/google-fonts.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="sky" aria-hidden="true">
+    <img id="sky-img" src="assets/img/generated/sky.webp" alt="">
+    <div class="sky-fade"></div>
+  </div>
+
+  <header class="site-header">
+    <div class="progress" id="progress" role="progressbar" aria-label="Page scroll progress">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div class="header-inner">
+      <div class="nav-pill">
+        <span class="nav-glider" aria-hidden="true"></span>
+        <a class="nav-item active" href="index.html">Home</a>
+        <a class="nav-item" href="projects/">Projects</a>
+        <a class="nav-item" href="about/">About</a>
+      </div>
+    </div>
+  </header>
+
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <svg class="icon-sun" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M19.1 4.9l-1.6 1.6M6.5 17.5l-1.6 1.6"/></svg>
+    <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 14.2A8.6 8.6 0 1 1 9.8 3.4a7 7 0 1 0 10.8 10.8Z"/></svg>
+  </button>
+
+  <main id="page">
+
+    <!-- ============ hero ============ -->
+    <section class="hero container section" id="home">
+      <div class="hero-left">
+        <p class="headline" data-reveal>Hey 👋, I&#x27;m Farell</p>
+        <h1 class="title-1 hero-title" data-reveal data-reveal-delay="1">AI @ Purdue</h1>
+        <p class="headline hero-copy" data-reveal data-reveal-delay="1">I design and build local-first AI tools and data-driven products — from a fully offline dictation app to a satellite water-quality map.</p>
+        <div class="hero-cta" data-reveal data-reveal-delay="2">
+          <a class="btn btn-primary" href="#connect">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="3"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg>
+            Contact
+          </a>
+          <a class="btn btn-card" href="projects/">View My Work
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-right" data-reveal data-reveal-delay="2">
+        <div class="portrait-frame">
+          <div class="portrait-card" id="portrait-card" role="img" aria-label="Pixel-art portrait of Praditya Farell; hover to reveal the photo">
+            <div class="portrait-inner">
+              <canvas></canvas>
+              <img class="portrait-real" src="assets/img/portrait-real.jpg" alt="Praditya Farell" onerror="this.style.display='none'">
+            </div>
+            <div class="portrait-scanlines" aria-hidden="true"></div>
+            <div class="portrait-hint">Hover to reveal</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ philosophy ============ -->
+    <section class="philosophy container section" id="philosophy">
+      <div class="philosophy-grid">
+        <div class="card-stack-wrap" data-reveal>
+          <div class="card-stack" tabindex="0" aria-label="How I build — drag or use arrow keys to browse the cards">
+            <article class="phil-card">
+              <div class="phil-head">
+                <span class="phil-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 8-4 4 4 4"/><path d="m17 8 4 4-4 4"/><path d="M14 4 10 20"/></svg></span>
+                <span class="phil-num">01</span>
+              </div>
+              <h3 class="phil-title">Learn by Building</h3>
+              <p class="phil-body">I understand systems best by shipping them end-to-end — the model, the backend, the interface — and then checking the result against reality.</p>
+            </article>
+            <article class="phil-card">
+              <div class="phil-head">
+                <span class="phil-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4.2 2.8 7.6 7 9 4.2-1.4 7-4.8 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+                <span class="phil-num">02</span>
+              </div>
+              <h3 class="phil-title">Local-first &amp; Private</h3>
+              <p class="phil-body">OpenVoice runs its speech model on your own machine — no cloud, no account, no API key. Tools should respect the people using them.</p>
+            </article>
+            <article class="phil-card">
+              <div class="phil-head">
+                <span class="phil-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg></span>
+                <span class="phil-num">03</span>
+              </div>
+              <h3 class="phil-title">Honest About Data</h3>
+              <p class="phil-body">Ripple refuses to claim more than the data supports. Every number I ship should trace back to its source — or not ship at all.</p>
+            </article>
+            <article class="phil-card">
+              <div class="phil-head">
+                <span class="phil-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v12H4z"/><path d="M8 20h8"/><path d="M12 16v4"/><path d="m12 7 1.2 2.4L16 10l-2 2 .5 2.6L12 13.4 9.5 14.6 10 12l-2-2 2.8-.6L12 7Z"/></svg></span>
+                <span class="phil-num">04</span>
+              </div>
+              <h3 class="phil-title">The Interface Is the Work</h3>
+              <p class="phil-body">A feature is finished when the interaction is finished — a pill that never steals focus, a map that explains itself.</p>
+            </article>
+          </div>
+          <span class="drag-pill">Drag card to browse 👇</span>
+        </div>
+
+        <div class="phil-right" data-reveal data-reveal-delay="1">
+          <h2 class="title-2 serif">How I Build</h2>
+          <p class="headline muted">Four principles behind everything I make — from the model down to the last pixel of the interface.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ projects ============ -->
+    <section class="projects-section container section" id="projects">
+      <div class="projects-head" data-reveal>
+        <h2 class="title-2 serif">My Projects</h2>
+        <p class="headline muted projects-sub">From local-first AI tools to data-driven maps — here&#x27;s a look at the work I&#x27;m proud of.</p>
+      </div>
+      <div class="masonry">
+
+        <a class="project-card" href="https://github.com/pfarell/openvoice" target="_blank" rel="noopener" data-reveal>
+          <div class="pc-head">
+            <span class="pc-icon"><img src="assets/img/projects/openvoice-icon.png" alt=""></span>
+            <span class="pc-name">OPENVOICE</span>
+            <span class="pc-links">
+              <span class="pc-link">GitHub ↗</span>
+            </span>
+          </div>
+          <div class="pc-media"><img src="assets/img/projects/card-openvoice.webp" alt="OpenVoice launch screen and dictation pill states"></div>
+          <div class="pc-body">
+            <h3 class="pc-title">Talk instead of typing — dictation that never leaves your machine.</h3>
+            <p class="pc-desc">A fully local push-to-talk dictation app for Windows. Hold a key, speak, release, and the text lands in whatever window has focus — faster-whisper runs on your CPU or GPU.</p>
+            <p class="pc-meta">Independent Project · 2026</p>
+          </div>
+        </a>
+
+        <a class="project-card" href="https://github.com/pfarell/ripple" target="_blank" rel="noopener" data-reveal data-reveal-delay="1">
+          <div class="pc-head">
+            <span class="pc-icon"><img src="assets/img/projects/ripple-icon.png" alt=""></span>
+            <span class="pc-name">RIPPLE</span>
+            <span class="pc-links">
+              <span class="pc-link">GitHub ↗</span>
+              <span class="pc-link">Live demo ↗</span>
+            </span>
+          </div>
+          <div class="pc-media"><img src="assets/img/projects/card-ripple.webp" alt="Ripple map, grounded assistant, 3D view and mobile layout"></div>
+          <div class="pc-body">
+            <h3 class="pc-title">A weather-radar-style forecast map for lake and river water quality.</h3>
+            <p class="pc-desc">Water quality now — and where new sediment is likely over the next seven days — computed from key-free Sentinel-2 and weather data, with an assistant that answers only from the shipped records.</p>
+            <p class="pc-meta">Independent Project · 2026</p>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ============ connect ============ -->
+    <section class="connect" id="connect">
+      <div class="connect-band" aria-hidden="true">
+        <img src="assets/img/generated/landscape.webp" alt="">
+      </div>
+      <div class="container-wide">
+        <div class="connect-card" data-reveal>
+          <div class="connect-left">
+            <h2 class="title-2 serif">Let&#x27;s Connect</h2>
+            <p class="headline muted">I&#x27;m always open to discussing new projects, creative ideas, or opportunities to be part of your visions.</p>
+            <div class="hero-cta">
+              <a class="btn btn-primary" href="https://github.com/pfarell" target="_blank" rel="noopener">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="3"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg>
+                Contact
+              </a>
+              <a class="btn btn-card" href="projects/">See Projects
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="connect-right">
+            <div class="footer-card">
+              <div class="footer-icons">
+                <a class="icon-btn" href="https://github.com/pfarell" target="_blank" rel="noopener" aria-label="GitHub">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.56 9.56 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+                </a>
+                <a class="icon-btn" href="https://www.linkedin.com/in/praditya-farell-raffa-faadilah-93726b379/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4V9Z"/></svg>
+                </a>
+              </div>
+              <p class="footer-note">2026 © Built from scratch by me.<br>No templates, no frameworks — just code.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <button class="fab" id="assistant-fab" type="button" aria-label="Open the site assistant" aria-expanded="false" aria-haspopup="dialog">
+    <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-8.5 8.5c-1.4 0-2.7-.3-3.8-.9L3 21l1.4-4.6A8.5 8.5 0 1 1 21 12Z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></svg>
+  </button>
+
+  <script src="js/app.js"></script>
+  <script src="js/assistant.js"></script>
+  <script src="js/portrait.js"></script>
+</body>
+</html>
+
