@@ -1,9 +1,10 @@
 # Deploying this portfolio — pfarell.github.io (free)
 
-**Live host: GitHub Pages → `https://pfarell.github.io`**
-- Hosting: **$0** · SSL: **$0** · No card, no subscription, no `.vercel.app` / `.netlify.app` URL.
-- The repo must be named exactly **`pfarell.github.io`** and live under the **pfarell** account
-  (user-site repos publish at that address).
+## ✅ DEPLOYED (2026-10-06)
+
+**Live: https://pfarell.github.io/** — hosted on GitHub Pages, $0, HTTPS enforced.
+Repo: https://github.com/pfarell/pfarell.github.io (public). Pages: `main` branch, root folder,
+build succeeded. Clean URLs: `/projects/` and `/about/` (old `.html` links redirect).
 
 ## One-time deploy (done for you if `gh` is logged in as pfarell)
 
@@ -25,12 +26,16 @@ First build takes 1–3 minutes. The site is live at `https://pfarell.github.io/
 
 ## Updating the site later
 
+The GitHub login used for the first deploy was session-scoped. Log in once as pfarell in your own
+terminal so git pushes to this repo work from then on:
+
 ```powershell
-gh auth switch --user pfarell      # if your active gh account is a different one
+gh auth login          # choose GitHub.com → sign in as pfarell
 git add -A; git commit -m "Update"; git push
 ```
 
-Pages redeploys automatically from `main`.
+(If both accounts are logged in, `gh auth switch --user pfarell` selects the right one.
+Pages redeploys automatically from `main`, usually within a minute.)
 
 ## Checklist after deploy
 

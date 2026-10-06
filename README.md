@@ -1,5 +1,7 @@
 # Praditya Farell — portfolio
 
+**Live: https://pfarell.github.io/** (GitHub Pages, $0 hosting + SSL, no `.vercel.app`/`.netlify.app`).
+
 A three-page personal portfolio, built from scratch as plain HTML/CSS/JS
 (no frameworks, no build step, no external services at runtime). The layout and
 design system are recreated from the reference site `serenacrq.com`, measured

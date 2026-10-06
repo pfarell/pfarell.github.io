@@ -1,21 +1,117 @@
-/* Wanderly — Farell's portfolio assistant.
-   A fully offline, hand-written knowledge base (121 intents) + matching
-   engine + chat UI. No API keys, no network calls: everything runs here.
+/* Wanderly — Farell's portfolio assistant (v3).
+   Fully offline: hand-written knowledge base + matching engine + chat UI.
+   No API keys, no network calls.
 
-   Matching pipeline: normalize → tokenize (plural-folded + synonyms) →
-   fuzzy spell-fix (Levenshtein) → phrase/topic scoring → tiered fallback
-   (topic-shaped answers for unknown tech questions). */
+   v3 upgrades:
+   - conversation context: follow-ups ("tell me more"), repeat detection,
+     pronoun-aware boosts ("you" → assistant, "he/him" → Farell)
+   - page awareness ("where am i") and time-aware greetings
+   - clarification flow ("did you mean …?" buttons) before giving up
+   - richer responses: variants, links, page buttons, follow-up questions
+   - a full assistant-identity family (model / creator / ChatGPT / API). */
 (function () {
   "use strict";
 
   /* ------------------------------------------------------------------ */
-  /* Knowledge base. asks = phrase patterns, keys = topic tokens,        */
-  /* a = answer, links = [{t,h}], page = {href,label}, top = scroll top. */
+  /* Knowledge base                                                      */
   /* ------------------------------------------------------------------ */
   var KB = [
+    /* -------- assistant identity (must come early: owns "you" queries) -------- */
+    {
+      asks: ["what model are you", "which model are you", "what llm are you", "what ai model do you use", "what model do you use", "are you an llm", "do you use a model", "what are you built on", "what are you running on"],
+      keys: ["model", "llm", "weights"],
+      a: "No model at all — there's no LLM under the hood. I'm a hand-written scripted assistant: a knowledge base about Farell plus a small matching engine, shipped as one JavaScript file. No weights, no prompts, no API.",
+      more: "Practical upshot: your questions never leave the browser, I can't be nudged into inventing wild things, and my blind spots are honest ones — when I don't know, I say so.",
+      follow: ["Are you ChatGPT?", "So no API key at all?"]
+    },
+    {
+      asks: ["are you chatgpt", "are you claude", "are you gemini", "are you gpt", "are you copilot", "are you bard", "are you not chatgpt", "are you chatgpt or claude", "are you an openai model", "are you made by openai", "are you made by anthropic", "are you made by google", "are you not chatgpt or claude or gemini"],
+      keys: ["chatgpt", "gpt", "claude", "gemini", "copilot", "bard", "openai", "anthropic"],
+      a: "Not ChatGPT, not Claude, not Gemini — none of them. I'm Wanderly: a scripted assistant built into this site by Farell. No OpenAI, Anthropic or Google involvement anywhere near me. 🤖",
+      follow: ["Who created you?", "What model are you?"]
+    },
+    {
+      asks: ["who created you", "who made you", "who built you", "who programmed you", "who wrote you", "who is your creator", "your creator", "who owns you"],
+      keys: ["creator", "created", "programmed"],
+      a: "Farell built me — hand-wrote my answers and wired me into this site. I'm part of the portfolio's own code: one JavaScript file, one knowledge base, no external service.",
+      more: "The whole point of building me by hand: the site could honestly claim \"no API keys, no cloud\" — and I could still answer questions.",
+      follow: ["So no API key at all?", "What model are you?"]
+    },
+    {
+      asks: ["did farell create you", "did farell created you", "did he create you", "did he made you", "are you created by farell", "are you created by him", "are you farell's assistant", "are you farells assistant", "are you farell ai assistant", "created by him", "created by farell", "created by praditya"],
+      keys: ["creator-him"],
+      a: "Yes — Farell created me. No company, no framework, no model vendor: I'm his side project, running in your browser, and my only job is to answer questions about him honestly."
+    },
+    {
+      asks: ["no api key", "do you have an api key", "do you use an api key", "do you use an api", "does wanderly use an api", "api key"],
+      keys: ["keyless"],
+      a: "No API key, no account, no network calls — my answers live in the site's own JavaScript. The AI bill for this portfolio is exactly zero. And yes, Farell wrote all of it.",
+      follow: ["What model are you?", "How was this site built?"]
+    },
+    {
+      asks: ["can you learn", "do you remember", "do you have memory", "will you remember this", "do you learn from this"],
+      keys: ["memory", "remember"],
+      a: "Within this conversation, yes — I keep track of what we've talked about, so \"tell me more\" and follow-ups work. Reload the page and I start fresh: nothing is stored, nothing leaves your browser.",
+      follow: ["Tell me more", "What can you do?"]
+    },
+    {
+      asks: ["are you real", "are you human", "are you a person", "are you alive"],
+      keys: [],
+      a: "I'm real in the sense that I exist in this page — but not a person. No feelings, no body, no weekend plans. Just answers about Farell. 😄"
+    },
+    {
+      asks: ["how old are you", "when were you created", "when were you built"],
+      keys: ["age-you"],
+      a: "I was born the day this site was built — I ship with it, version by version. Currently: 135 intents and counting."
+    },
+    {
+      asks: ["do you know everything about him", "do you know everything", "are you omniscient"],
+      keys: ["everything"],
+      a: "Nope — and that's by design. I only answer from what's public: this site and his GitHub. If it's not there, I say \"not public\" rather than guess."
+    },
+    {
+      asks: ["who is your boss", "who do you work for", "who owns this site"],
+      keys: ["boss"],
+      a: "Farell — it's his portfolio. I answer questions about him; he answers the ones I can't, over GitHub or LinkedIn.",
+      links: [
+        { t: "GitHub", h: "https://github.com/pfarell" },
+        { t: "LinkedIn", h: "https://www.linkedin.com/in/praditya-farell-raffa-faadilah-93726b379/" }
+      ]
+    },
+    {
+      asks: ["can you code", "can you write code", "write me code"],
+      keys: ["code-you"],
+      a: "I only talk — though I can print(\"hello world\"). For actual code, the real thing is at github.com/pfarell.",
+      links: [{ t: "github.com/pfarell", h: "https://github.com/pfarell" }]
+    },
+
+    /* -------- awareness -------- */
+    {
+      asks: ["where am i", "what page is this", "what page am i on", "what can i do here", "i'm lost", "help me navigate", "guide me"],
+      keys: ["page-here"],
+      dyn: function () {
+        return "You're on " + pageName() + ". Quick moves: the nav pill goes Home / Projects / About, and I can take you anywhere — try \"take me to projects\", or ask me anything about his work.";
+      },
+      follow: ["What can he do?", "Show me his projects", "How do I contact him?"]
+    },
+    {
+      asks: ["good morning", "good afternoon", "good evening"],
+      keys: [],
+      dyn: function () {
+        var h = new Date().getHours();
+        var g = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
+        return g + "! 👋 I'm Wanderly, Farell's assistant — ask me about him, his projects, his studies at Purdue, or how to get around this site.";
+      }
+    },
+    {
+      asks: ["tell me more", "more", "go on", "continue", "elaborate", "more please", "and"],
+      keys: [],
+      a: "Happy to go deeper — but on what? Try \"tell me more\" right after a question, or pick a topic: OpenVoice, Ripple, his studies, his stack, or this site."
+    },
+
     /* -------- greetings & identity -------- */
     {
-      asks: ["hello", "hi", "hey", "yo", "good morning", "good evening"],
+      asks: ["hello", "hi", "hey", "yo"],
       keys: ["greetings", "sup"],
       a: "Hey! 👋 I'm Wanderly, Farell's assistant. Ask me about him, his projects (OpenVoice, Ripple), his studies at Purdue, or how to get around this site."
     },
@@ -23,7 +119,8 @@
       asks: ["who is farell", "who's farell", "who is he", "about farell", "about him", "tell me about farell", "introduce him", "who is praditya", "full name"],
       keys: ["who", "farell", "praditya", "faadilah", "intro", "introduction", "bio", "identity", "name"],
       a: "Praditya Farell Raffa Faadilah — he goes by Farell. He studies Artificial Intelligence at Purdue University and builds local-first AI tools and data-driven products end-to-end: the model, the backend, and the interface.",
-      page: { href: "about.html", label: "Read his About page" }
+      page: { href: "about.html", label: "Read his About page" },
+      follow: ["What can he do?", "Show me his projects"]
     },
     {
       asks: ["nickname", "what do his friends call him", "short name"],
@@ -35,7 +132,8 @@
       keys: ["does", "background", "focus", "working", "interesting", "builds", "capable", "abilities", "ability"],
       a: "His two public projects sum it up best:\n🎙️ OpenVoice — a fully local push-to-talk dictation app for Windows\n🌊 Ripple — a satellite water-quality forecast map with a grounded assistant\nUnder the hood that's Python, React/TypeScript, PySide6, speech models and Sentinel-2 satellite data.",
       links: [{ t: "GitHub", h: "https://github.com/pfarell" }],
-      page: { href: "projects.html", label: "See his Projects" }
+      page: { href: "projects.html", label: "See his Projects" },
+      follow: ["What is OpenVoice?", "What is Ripple?"]
     },
     {
       asks: ["what is he studying", "his major", "where does he study", "education", "what is his degree", "purdue university", "does he go to purdue", "what is his latest education", "his latest edution"],
@@ -62,12 +160,12 @@
     {
       asks: ["what is his username", "his handle", "pfarell"],
       keys: ["username", "handle", "pfarell"],
-      a: "pfarell — his GitHub handle, and the name this site is built for: pfarell.dev."
+      a: "pfarell — his GitHub handle, and the name this site is built for: pfarell.dev (currently live at pfarell.github.io)."
     },
     {
       asks: ["what is pfarell.dev", "his website", "does he have a website", "his site"],
       keys: ["domain", "url", "pfarell.dev"],
-      a: "pfarell.dev is this portfolio's home — a static site deployed from GitHub to Vercel. Nothing public mentions any other website of his."
+      a: "This portfolio live at pfarell.github.io today, and built to move to pfarell.dev — a static site deployed from GitHub. Nothing public mentions any other website of his."
     },
     {
       asks: ["more photos of him", "photo gallery", "does he have more pictures"],
@@ -117,7 +215,8 @@
       a: "Two main public projects:\n• OpenVoice — fully local push-to-talk dictation for Windows 🎙️\n• Ripple — a satellite water-quality forecast map with a grounded AI assistant 🌊\nAsk me about either one, or open the Projects page.",
       links: [{ t: "GitHub", h: "https://github.com/pfarell" }],
       page: { href: "projects.html", label: "Open Projects" },
-      nav: ["go to projects", "open projects", "show me the projects", "projects page", "take me to projects"]
+      nav: ["go to projects", "open projects", "show me the projects", "projects page", "take me to projects"],
+      follow: ["What is OpenVoice?", "What is Ripple?"]
     },
     {
       asks: ["latest project", "newest project", "what is his latest project", "recent work", "what is he working on now", "latest work"],
@@ -169,8 +268,10 @@
       asks: ["what is openvoice", "tell me about openvoice", "openvoice", "dictation app", "voice to text", "speech to text app", "his dictation app"],
       keys: ["openvoice", "dictation", "voice", "typing", "speech", "whisper", "transcription", "stt", "microphone"],
       a: "OpenVoice is a fully local push-to-talk dictation app for Windows. Hold a key, speak, release — and the text lands in whatever window has focus. It runs faster-whisper on his machine: no cloud, no account, no API key. It auto-detects around 99 languages and ships with 293 passing tests. 🎙️",
+      more: "My favourite detail: the 200×44 px pill at the bottom of the screen is hand-painted and runs at 60 Hz — it never steals focus and is click-through, so it's impossible to type into by accident.",
       links: [{ t: "OpenVoice on GitHub", h: "https://github.com/pfarell/openvoice" }],
-      page: { href: "projects.html", label: "See the project card" }
+      page: { href: "projects.html", label: "See the project card" },
+      follow: ["Is OpenVoice private?", "What is Ripple?"]
     },
     {
       asks: ["openvoice hotkeys", "how do i use openvoice", "openvoice controls"],
@@ -208,7 +309,7 @@
       a: "MIT licensed — both OpenVoice and Ripple are. Use, fork and ship freely, with attribution."
     },
     {
-      asks: ["does openvoice send my voice anywhere", "is openvoice private", "openvoice privacy"],
+      asks: ["does openvoice send my voice anywhere", "is openvoice private", "is openvoice private?", "openvoice privacy"],
       keys: ["privacy", "private", "send", "server"],
       a: "Audio never leaves the machine. No cloud, no account, no API key — the only network operation in the whole project is the manual one that fetches the model."
     },
@@ -223,11 +324,13 @@
       asks: ["what is ripple", "tell me about ripple", "ripple", "water quality map", "satellite map", "his water map"],
       keys: ["ripple", "water", "lake", "river", "satellite", "sentinel", "quality", "map", "bloom", "turbidity", "sediment"],
       a: "Ripple is a weather-radar-style forecast map for lake and river water quality. Four Sentinel-2 composites show the last six weeks of change in the water, and a 7-day rainfall-runoff outlook shows where new sediment is likely next. Every number can be traced back to the scene, cell and frame it came from. 🌊",
+      more: "One detail I like: the colour ramp is relative to each region's own observed range — so it can say \"this bay is the dirtiest it's been in six weeks\" without ever pretending to be a health standard.",
       links: [
         { t: "Live demo", h: "https://ripple-liart.vercel.app" },
         { t: "Ripple on GitHub", h: "https://github.com/pfarell/ripple" }
       ],
-      page: { href: "projects.html", label: "See the project card" }
+      page: { href: "projects.html", label: "See the project card" },
+      follow: ["How is Ripple validated?", "What is OpenVoice?"]
     },
     {
       asks: ["how does ripple work", "ripple composites", "how is ripple built"],
@@ -294,7 +397,8 @@
       asks: ["what is his stack", "skills", "technologies", "what languages does he know", "what tools does he use", "tech stack", "does he know react", "does he know typescript", "does he know javascript"],
       keys: ["stack", "skills", "technology", "technologies", "tools", "languages", "python", "react", "typescript", "javascript"],
       a: "Python, React and TypeScript, PySide6 (Qt), faster-whisper, tool-calling agents, and remote sensing with Sentinel-2 data. He also cares a lot about data visualization and interface polish.",
-      page: { href: "about.html", label: "See About → Stack" }
+      page: { href: "about.html", label: "See About → Stack" },
+      follow: ["Does he know machine learning?", "What is his best project?"]
     },
     {
       asks: ["machine learning", "does he know machine learning", "neural network", "neural networks", "deep learning", "artificial intelligence", "does he know ai", "machine learnig"],
@@ -322,7 +426,7 @@
       a: "Nothing public mentions C++, Java, Rust or Go — his public work is Python and TypeScript."
     },
     {
-      asks: ["backend", "server", "api", "serverless", "does he do backend"],
+      asks: ["backend", "server", "api", "serverless", "does he do backend", "does he use api"],
       keys: ["backend", "server", "api", "endpoint", "serverless"],
       a: "Ripple runs a Python data pipeline plus server-side tools for its assistant. OpenVoice is deliberately network-free — zero API calls at runtime. Both public projects are key-free by design."
     },
@@ -398,7 +502,8 @@
         { t: "LinkedIn", h: "https://www.linkedin.com/in/praditya-farell-raffa-faadilah-93726b379/" }
       ],
       page: { href: "#connect", label: "Go to the Connect section" },
-      nav: ["take me to contact", "contact section", "go to contact", "open contact"]
+      nav: ["take me to contact", "contact section", "go to contact", "open contact"],
+      follow: ["Is he open to work?"]
     },
     {
       asks: ["social media", "does he have social media", "does he has social media", "socials", "instagram", "twitter", "facebook", "tiktok", "his social media"],
@@ -465,7 +570,8 @@
       asks: ["his philosophy", "principles", "how does he work", "his values", "design philosophy"],
       keys: ["philosophy", "principles", "values", "approach", "principle"],
       a: "Four principles, shown as draggable cards on the home page:\n01 Learn by Building\n02 Local-first & Private\n03 Honest About Data\n04 The Interface Is the Work",
-      page: { href: "index.html#philosophy", label: "See the cards" }
+      page: { href: "index.html#philosophy", label: "See the cards" },
+      follow: ["What inspires him?", "How does the portrait work?"]
     },
     {
       asks: ["quote", "his inspiration", "motto", "what inspires him"],
@@ -478,7 +584,8 @@
     {
       asks: ["how was this site built", "what is this website made of", "is this site framework", "what tech is this site", "who made this website", "does this site use a framework"],
       keys: ["site", "website", "framework", "nextjs", "built", "made"],
-      a: "This site is plain HTML, CSS and JavaScript — no frameworks, no build step, no API keys. Fonts are bundled locally, the sky and pixel scenes were generated locally, and the assistant you're talking to is a scripted knowledge base, not a cloud model."
+      a: "This site is plain HTML, CSS and JavaScript — no frameworks, no build step, no API keys. Fonts are bundled locally, the sky and pixel scenes were generated locally, and the assistant you're talking to is a scripted knowledge base, not a cloud model.",
+      follow: ["What model are you?", "Is this site fast?"]
     },
     {
       asks: ["is this site fast", "does the site use a framework", "why no react"],
@@ -516,9 +623,9 @@
       a: "Keyboard-navigable nav and dialogs, visible focus states, ≥44 px touch targets on mobile, reduced-motion support — and this panel is a labelled dialog you can close with Esc."
     },
     {
-      asks: ["what is the url of this site", "how do i share this site", "link to this site"],
-      keys: ["url", "share"],
-      a: "It's built to live at pfarell.dev — share that. Projects and About are clean URLs too: /projects and /about."
+      asks: ["what is the url of this site", "how do i share this site", "link to this site", "where is this site hosted", "what is the website address"],
+      keys: ["url", "share", "hosted"],
+      a: "It's live at pfarell.github.io (free GitHub Pages hosting), built to move to pfarell.dev later. Projects and About are clean URLs too: /projects/ and /about/."
     },
     {
       asks: ["what happened to the star", "there used to be a star", "sparkle"],
@@ -543,8 +650,8 @@
     {
       asks: ["can i view the source of this site", "is this site open source"],
       keys: ["view-source"],
-      a: "There's no public repo for this site yet — the public code is OpenVoice and Ripple. Whether the site joins them is up to him.",
-      links: [{ t: "github.com/pfarell", h: "https://github.com/pfarell" }]
+      a: "The public repos are OpenVoice and Ripple — and the portfolio repo itself is public too: github.com/pfarell/pfarell.github.io.",
+      links: [{ t: "Portfolio repo", h: "https://github.com/pfarell/pfarell.github.io" }]
     },
     {
       asks: ["dark mode", "how do i change the theme", "night mode", "light mode", "theme"],
@@ -553,7 +660,7 @@
     },
     {
       asks: ["how do i use this site", "guide me", "what should i click", "where do i start"],
-      keys: ["around", "guide", "start"],
+      keys: ["around", "start"],
       a: "Try the Projects page for his work, About for the full story, or ask me things like \"What is OpenVoice?\" or \"How do I contact him?\". The portrait at the top reacts to your mouse, and the philosophy cards on the home page are draggable."
     },
 
@@ -604,9 +711,10 @@
 
     /* -------- meta & fun -------- */
     {
-      asks: ["are you an ai", "are you chatgpt", "are you a real ai", "who are you", "what are you", "are you an llm", "are you a bot"],
-      keys: ["chatgpt", "gpt", "bot", "llm", "yourself"],
-      a: "I'm Wanderly — a small scripted assistant that runs entirely in your browser. No API, no account, no model weights: I match your questions against a hand-written knowledge base about Farell. Honest and offline, if not exactly conscious. 🤖"
+      asks: ["are you an ai", "are you a real ai", "who are you", "what are you", "are you a bot"],
+      keys: ["bot", "yourself"],
+      a: "I'm Wanderly — a small scripted assistant that runs entirely in your browser. No API, no account, no model weights: I match your questions against a hand-written knowledge base about Farell. Honest and offline, if not exactly conscious. 🤖",
+      follow: ["What model are you?", "Who created you?"]
     },
     {
       asks: ["what does wanderly mean", "who is wanderly", "what is wanderly", "why are you called wanderly", "who named you"],
@@ -616,7 +724,8 @@
     {
       asks: ["what can you do", "help", "options", "what can you answer", "what do you know"],
       keys: ["help", "ask"],
-      a: "Ask me about: Farell himself, his projects (OpenVoice, Ripple), his studies at Purdue, his stack, this site (dark mode, the portrait, the fonts), or how to contact him — and I can take you to any page you want."
+      a: "Ask me about: Farell himself, his projects (OpenVoice, Ripple), his studies at Purdue, his stack, this site (dark mode, the portrait, the fonts), or how to contact him — and I can take you to any page you want.",
+      follow: ["What should I ask?", "Where am I?"]
     },
     {
       asks: ["what should i ask", "suggest some questions", "give me ideas"],
@@ -624,7 +733,7 @@
       a: "Try: \"What is OpenVoice?\", \"How does Ripple work?\", \"What is his stack?\", \"Is he open to work?\", or \"Take me to projects\" — or just ask me to explain anything on the site."
     },
     {
-      asks: ["do you make things up", "can i trust you", "are you accurate", "do you ever lie"],
+      asks: ["do you make things up", "can i trust you", "are you accurate", "do you ever lie", "why should i trust you"],
       keys: ["trust", "accurate", "lie"],
       a: "I only answer from a hand-written knowledge base about Farell — if it's not in there, I say so instead of guessing. Where something isn't public, the honest answer is \"not public\", and that's what you'll get."
     },
@@ -671,7 +780,8 @@
     {
       asks: ["what is his best project", "which project is his favourite", "best project"],
       keys: ["best"],
-      a: "I won't speak for him — but if you want my (biased) pick: OpenVoice. \"Your audio never leaves the machine\" is a bold rule to build an entire app around."
+      a: "I won't speak for him — but if you want my (biased) pick: OpenVoice. \"Your audio never leaves the machine\" is a bold rule to build an entire app around.",
+      follow: ["What is OpenVoice?", "What is Ripple?"]
     },
     {
       asks: ["is he smart", "is he talented", "tell me something nice about him"],
@@ -687,7 +797,7 @@
     {
       asks: ["thank you", "thanks", "thx"],
       keys: ["thanks", "thank", "thx"],
-      a: "Anytime! 😄"
+      a: "Anytime! 😄 If you want to keep exploring: Projects has the work, About has the story."
     },
     {
       asks: ["bye", "goodbye", "see you", "later"],
@@ -725,7 +835,8 @@
     neural: "networks", "neural network": "networks", "neural networks": "networks", "deep learning": "deep",
     socials: "social", insta: "instagram",
     contacts: "contact", "e-mail": "email", phone: "number",
-    abilities: "ability", capability: "ability", capable: "ability"
+    abilities: "ability", capability: "ability", capable: "ability",
+    creator: "creator", created: "created", makers: "creator", makersof: "creator"
   };
 
   function normalize(raw) {
@@ -793,48 +904,69 @@
     return new RegExp("\\b" + phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b").test(raw);
   }
 
-  function match(raw) {
+  function isAssistantEntry(e) {
+    var s = ((e.asks || []).join(" ") + " " + (e.keys || []).join(" ")).toLowerCase();
+    return /\b(you|your|yourself|wanderly|assistant|chatgpt|claude|gemini|bot|llm)\b/.test(s);
+  }
+
+  function isFarellEntry(e) {
+    var s = ((e.asks || []).join(" ") + " " + (e.keys || []).join(" ")).toLowerCase();
+    return /\b(farell|praditya|faadilah|his|him|he)\b/.test(s);
+  }
+
+  function pageName() {
+    var p = (location.pathname || "/").toLowerCase();
+    if (/projects(\/index\.html)?\/?$/.test(p)) return "the Projects page";
+    if (/about(\/index\.html)?\/?$/.test(p)) return "the About page";
+    return "the Home page";
+  }
+
+  function analyze(raw) {
     var text = normalize(raw);
-    if (!text) return null;
     var tokens = tokenize(text);
     var fuzzy = [];
     tokens.forEach(function (t) {
       var f = fuzzyToken(t);
-      if (f) fuzzy.push(f);
+      if (f && fuzzy.indexOf(f) === -1) fuzzy.push(f);
     });
-    var best = null;
-    var bestScore = 0;
-    KB.forEach(function (entry) {
+    var talkingToAssistant = /\b(you|your|yourself|wanderly)\b/.test(text);
+    var talkingAboutFarell = /\b(he|his|him|farell|praditya|faadilah)\b/.test(text);
+    var ranked = [];
+    KB.forEach(function (e, idx) {
       var score = 0;
-      (entry.asks || []).forEach(function (p) {
-        if (phraseHit(text, p)) score += 6;
+      var phraseHits = 0;
+      (e.asks || []).forEach(function (p) {
+        if (phraseHit(text, p)) { score += 6; phraseHits += 1; }
       });
-      (entry.nav || []).forEach(function (p) {
-        if (phraseHit(text, p)) score += 9;
+      (e.nav || []).forEach(function (p) {
+        if (phraseHit(text, p)) { score += 9; phraseHits += 1; }
       });
-      (entry.keys || []).forEach(function (k) {
-        if (tokens.indexOf(k) !== -1) score += 2;
-        else if (fuzzy.indexOf(k) !== -1) score += 2;
+      (e.keys || []).forEach(function (k) {
+        if (tokens.indexOf(k) !== -1 || fuzzy.indexOf(k) !== -1) score += 2;
       });
-      if (score > bestScore) {
-        bestScore = score;
-        best = entry;
-      }
+      if (talkingToAssistant && isAssistantEntry(e)) score += 2;
+      if (talkingAboutFarell && isFarellEntry(e)) score += 2;
+      if (score > 0) ranked.push({ e: e, s: score, ph: phraseHits, i: idx });
     });
-    if (!best || bestScore < 4) return null;
-    return best;
+    ranked.sort(function (a, b) {
+      return b.s - a.s || b.ph - a.ph || a.i - b.i;
+    });
+    return { text: text, tokens: tokens, ranked: ranked };
   }
 
-  /* Question shapes about an unknown topic get an honest, useful answer
-     instead of the generic fallback. */
   function isTopicQuestion(text) {
     return /^(can|could|does|do|is|are|has|did|will|would)\b/.test(text) ||
       /\b(know|knows|use|uses|used|work with|worked with|experience|familiar|learn)\b/.test(text);
   }
 
-  function unknownTopicAnswer() {
-    return "Nothing public mentions that one, so I won't pretend it's there. What is public: Python, React/TypeScript, PySide6 desktop apps, speech models (faster-whisper) and Sentinel-2 satellite data. If it's not on this site or github.com/pfarell, I don't claim it.";
-  }
+  /* ------------------------------------------------------------------ */
+  /* Conversation state (session only, never stored or sent anywhere)    */
+  /* ------------------------------------------------------------------ */
+  var ctx = {
+    lastEntry: null,
+    lastText: "",
+    answered: []
+  };
 
   /* ------------------------------------------------------------------ */
   /* UI                                                                  */
@@ -842,17 +974,18 @@
   var fab = document.getElementById("assistant-fab");
   if (!fab) return;
 
-  /* Resolve asset paths relative to this script, so the widget works at any
-     page depth (/projects/, /about/, …). */
   var SCRIPT_BASE = (function () {
     var s = document.currentScript;
     if (s && s.src) return s.src.replace(/[^/]*$/, "");
     return "";
   })();
 
+  var totalAsks = KB.reduce(function (n, e) { return n + (e.asks || []).length + (e.nav || []).length; }, 0);
+
   var root = document.createElement("div");
   root.className = "assistant";
   root.setAttribute("data-kb", String(KB.length));
+  root.setAttribute("data-asks", String(totalAsks));
   root.innerHTML =
     '<div class="assistant-panel" role="dialog" aria-label="Wanderly — ask about Farell" inert>' +
     '  <header class="assistant-head">' +
@@ -948,14 +1081,25 @@
     }
   }
 
-  function addPageButton(el, page) {
+  function addButton(el, label, onClick) {
     var b = document.createElement("button");
     b.type = "button";
     b.className = "nav-btn";
-    b.textContent = page.label + " →";
-    b.addEventListener("click", function () { goTo(page.href); });
+    b.textContent = label;
+    b.addEventListener("click", onClick);
     el.appendChild(b);
     scrollDown();
+    return b;
+  }
+
+  function addPageButton(el, page) {
+    addButton(el, page.label + " →", function () { goTo(page.href); });
+  }
+
+  function addFollowUps(el, questions) {
+    (questions || []).slice(0, 3).forEach(function (q) {
+      addButton(el, q, function () { ask(q); });
+    });
   }
 
   function stream(el, text, done) {
@@ -977,29 +1121,35 @@
     }, perWord);
   }
 
-  function respond(entry, raw) {
+  function present(entry, text, opts) {
+    opts = opts || {};
     var typing = document.createElement("div");
     typing.className = "msg bot";
     typing.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>';
     log.appendChild(typing);
     scrollDown();
+    var answer = entry.dyn ? entry.dyn() : entry.a;
+    if (opts.prefix) answer = opts.prefix + answer;
     window.setTimeout(function () {
       typing.textContent = "";
-      stream(typing, entry.a, function () {
+      stream(typing, answer, function () {
         if (entry.links) addLinks(typing, entry.links);
         if (entry.page) addPageButton(typing, entry.page);
+        addFollowUps(typing, entry.follow);
         if (entry.top) {
           window.setTimeout(function () { goTo("#top"); }, 600);
         }
-        var autoNav = /^(go to|open|take me to|navigate to|jump to)\b/.test(normalize(raw));
+        var autoNav = /^(go to|open|take me to|navigate to|jump to)\b/.test(normalize(text));
         if (autoNav && entry.page && entry.page.href.charAt(0) !== "#") {
           window.setTimeout(function () { goTo(entry.page.href); }, 900);
         }
       });
-    }, 420 + Math.min(400, entry.a.length));
+    }, 380 + Math.min(360, (entry.a || "").length));
+    ctx.lastEntry = entry;
+    if (ctx.answered.indexOf(entry) === -1) ctx.answered.push(entry);
   }
 
-  function respondText(text) {
+  function presentText(text, follow) {
     var typing = document.createElement("div");
     typing.className = "msg bot";
     typing.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>';
@@ -1007,36 +1157,103 @@
     scrollDown();
     window.setTimeout(function () {
       typing.textContent = "";
-      stream(typing, text, function () {});
-    }, 420);
+      stream(typing, text, function () {
+        addFollowUps(typing, follow);
+      });
+    }, 400);
+  }
+
+  /* "tell me more" — expand on the previous entry or pick a sibling topic. */
+  function expand() {
+    var last = ctx.lastEntry;
+    if (last && last.more) {
+      presentText(last.more, last.follow);
+      return;
+    }
+    if (last) {
+      var best = null;
+      var bestOverlap = 0;
+      KB.forEach(function (e) {
+        if (e === last || e.dyn || e.nav) return;
+        if (ctx.answered.indexOf(e) !== -1) return;
+        var overlap = 0;
+        (e.keys || []).forEach(function (k) {
+          if ((last.keys || []).indexOf(k) !== -1) overlap += 1;
+        });
+        if (overlap > bestOverlap) {
+          bestOverlap = overlap;
+          best = e;
+        }
+      });
+      if (best && bestOverlap > 0) {
+        present(best, "", { prefix: "Here's something related — " });
+        return;
+      }
+    }
+    presentText(
+      "I've told you everything I have on that one. Want to try a different angle? OpenVoice, Ripple, his studies, his stack — or ask me to take you to a page.",
+      ["What is OpenVoice?", "What is Ripple?"]
+    );
+  }
+
+  function unknownTopicAnswer() {
+    return "Nothing public mentions that one, so I won't pretend it's there. What is public: Python, React/TypeScript, PySide6 desktop apps, speech models (faster-whisper) and Sentinel-2 satellite data. If it's not on this site or github.com/pfarell, I don't claim it.";
+  }
+
+  function ambiguous(ranked) {
+    var el = addMsg("bot", "Hmm, I'm not 100% sure what you meant. Did you mean one of these? 👇");
+    ranked.slice(0, 3).forEach(function (r) {
+      var label = (r.e.asks && r.e.asks[0]) ? r.e.asks[0] : "Tell me more";
+      addButton(el, label.charAt(0).toUpperCase() + label.slice(1), function () { ask(label); });
+    });
   }
 
   function fallback() {
     var el = addMsg(
       "bot",
-      "Hmm, I don't have a written answer for that one yet — my knowledge base is hand-built. Try asking about his projects, his studies, or how to contact him. You can also poke around:"
+      "I don't have a written answer for that one yet — my knowledge base is hand-built. Try asking about his projects, his studies, or how to contact him. You can also poke around:"
     );
     addPageButton(el, { href: "projects.html", label: "Projects" });
     addPageButton(el, { href: "about.html", label: "About" });
     addPageButton(el, { href: "#connect", label: "Connect" });
   }
 
+  var MORE_RE = /^(tell me )?(more|me more)( please)?$|^(go on|continue|and|elaborate|keep going)$/;
+
   function ask(raw) {
     if (busy) return;
     var text = (raw || "").trim();
     if (!text) return;
     addMsg("user", text);
-    var entry = match(text);
-    if (entry) {
-      respond(entry, text);
+
+    var norm = normalize(text);
+
+    /* conversation control */
+    if (MORE_RE.test(norm)) {
+      ctx.lastText = norm;
+      expand();
       return;
     }
-    var norm = normalize(text);
-    if (isTopicQuestion(norm)) {
-      respondText(unknownTopicAnswer());
-    } else {
-      fallback();
+    var repeat = norm === ctx.lastText;
+    ctx.lastText = norm;
+
+    var res = analyze(text);
+    var best = res.ranked.length ? res.ranked[0] : null;
+
+    if (best && best.s >= 4) {
+      present(best.e, text, repeat ? { prefix: "You asked that again 😄 — " } : null);
+      return;
     }
+    if (isTopicQuestion(norm)) {
+      ctx.lastEntry = null;
+      presentText(unknownTopicAnswer(), ["What can he do?", "Show me his projects"]);
+      return;
+    }
+    if (res.ranked.length && res.ranked[0].s >= 2) {
+      ambiguous(res.ranked);
+      return;
+    }
+    fallback();
   }
 
   CHIPS.forEach(function (c) {
