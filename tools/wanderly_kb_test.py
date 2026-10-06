@@ -12,6 +12,7 @@ Exit code 0 only when all checks pass.
 
 import json
 import os
+import re
 import sys
 
 from playwright.sync_api import sync_playwright
@@ -19,6 +20,7 @@ from playwright.sync_api import sync_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 KB_FILE = os.path.join(ROOT, "js", "wanderly-kb.js")
 BASE = "http://127.0.0.1:4173/index.html"
+REPEAT_ALLOW = {"night night", "ha ha", "bye bye", "no no"}
 
 CASES = [
     # small talk
@@ -80,6 +82,10 @@ def structural_checks():
             if a in seen:
                 problems.append("duplicate ask %r (%d and %d)" % (a, seen[a], i))
             seen[a] = i
+            if a not in REPEAT_ALLOW and re.search(r"\b(\w+)\s+\1\b", a, re.UNICODE):
+                problems.append("repeated word in ask: %r" % a)
+            if "  " in a:
+                problems.append("double space in ask: %r" % a)
     print("structural: %d entries, %d ask patterns, %d problems" % (len(entries), total_asks, len(problems)))
     for p in problems[:20]:
         print("  " + p)
