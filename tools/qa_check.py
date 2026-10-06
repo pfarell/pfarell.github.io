@@ -155,7 +155,7 @@ with sync_playwright() as p:
             "header": header_text,
             "kb_entries": kb_size,
             "footer_element": foot,
-            "pass": "Wanderly" in header_text and kb_size >= 120 and foot is False,
+            "pass": "Wanderly" in header_text and kb_size >= 700 and foot is False,
         }
     )
     pg.fill(".assistant-input", "what is openvoice")
