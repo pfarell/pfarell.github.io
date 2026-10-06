@@ -219,6 +219,20 @@ with sync_playwright() as p:
 
     pg.goto(BASE + "about.html", wait_until="networkidle")
     pg.wait_for_timeout(2000)
+    strip = pg.evaluate(
+        "() => { var s = document.querySelector('.polaroid-strip'); return { cw: s.clientWidth, vw: window.innerWidth }; }"
+    )
+    polaroids = pg.evaluate("() => document.querySelectorAll('.polaroid').length")
+    report.append(
+        {
+            "page": "about.html",
+            "test": "polaroid strip is full-bleed (cards never clipped by a narrow container)",
+            "strip_clientWidth": strip["cw"],
+            "viewport": strip["vw"],
+            "polaroids": polaroids,
+            "pass": abs(strip["cw"] - strip["vw"]) <= 1 and polaroids >= 8,
+        }
+    )
     sticker = pg.locator(".sticker").first
     sticker.scroll_into_view_if_needed()
     pg.wait_for_timeout(700)
