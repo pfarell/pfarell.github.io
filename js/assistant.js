@@ -136,7 +136,7 @@
     {
       asks: ["what does he do", "what does farell do", "his background", "what is he into", "what is he working on", "what can he do", "what are his skills", "what is he good at", "his abilities", "what are his abilities"],
       keys: ["does", "background", "focus", "working", "interesting", "builds", "capable", "abilities", "ability"],
-      a: "His three public projects sum it up best:\n🎙️ OpenVoice — a fully local push-to-talk dictation app for Windows\n🌊 Ripple — a satellite water-quality forecast map with a grounded assistant\n🎮 Chorémon — an AR + AI chore game, MLH Best Use of Gemini API at Hack Indy 2026\nUnder the hood that's Python, React/TypeScript, PySide6, speech models, Sentinel-2 satellite data, Unity and Three.js.",
+      a: "His three public projects sum it up best:\n🎙️ OpenVoice — a fully local push-to-talk dictation app for Windows\n🌊 Ripple — a satellite water-quality forecast map with a grounded assistant\n🎮 Chorémon — an AR + AI chore game, MLH Best Use of Gemini API at Hack Indy 2026\nUnder the hood that's Python, React/TypeScript, PySide6, speech models, Sentinel-2 satellite data and Three.js — with Roblox Studio in his 3D toolkit.",
       links: [{ t: "GitHub", h: "https://github.com/pfarell" }],
       page: { href: "projects.html", label: "See his Projects" },
       follow: ["What is OpenVoice?", "What is Ripple?"]
@@ -266,7 +266,7 @@
     {
       asks: ["choremon", "chorémon", "choremon project", "what is choremon"],
       keys: ["choremon"],
-      a: "Chorémon is a gamified AR chores app he built with Winner R. Rasendriya at Hack Indy 2026 — it won MLH's Best Use of Gemini API. 🏆 AI vision finds the mess, a snarky raccoon named Rascal keeps you moving, and two AR modes turn cleaning into a game: WebXR coin-collecting and a Unity/ARCore tile grid.",
+      a: "Chorémon is a gamified AR chores app he built with Winner R. Rasendriya at Hack Indy 2026 — it won MLH's Best Use of Gemini API. 🏆 AI vision finds the mess, a snarky raccoon named Rascal keeps you moving, and two AR modes turn cleaning into a game: WebXR coin-collecting in the browser, and an ARCore tile grid for Android that his co-author built in Unity.",
       more: "The AI is a fallback chain — Gemini → fine-tuned Gemma on Featherless → OpenRouter → NVIDIA Nemotron — with mock data as the last resort so the demo never dies.",
       links: [
         { t: "Live demo", h: "https://choremon-six.vercel.app" },
@@ -276,9 +276,9 @@
       follow: ["What did he win?", "What is OpenVoice?"]
     },
     {
-      asks: ["does he know unity", "does he know ar", "unity experience", "augmented reality experience", "does he know three.js", "webxr"],
-      keys: ["unity", "arcore", "webxr", "three.js"],
-      a: "Yes — Chorémon ships two AR modes: a WebXR + Three.js coin mode that runs in any AR-capable Android browser, and a Unity + ARCore \"tile mode\" that maps a room's floor into a grid you clean in real time. No MacBook in the team, so iOS goes through Mozilla's XRViewer."
+      asks: ["does he know unity", "does he know ar", "unity experience", "augmented reality experience", "does he know three.js", "webxr", "does he know roblox studio", "does he know roblox", "roblox studio experience"],
+      keys: ["roblox", "studio", "arcore", "webxr", "three.js"],
+      a: "Roblox Studio, Three.js and WebXR, yes — that's his 3D and game tooling. Unity, no: he hasn't worked with it; the Unity/ARCore \"tile mode\" in Chorémon was his co-author's part. The other Chorémon AR mode (WebXR + Three.js coins) runs in any AR-capable browser."
     },
 
     /* -------- OpenVoice deep dive -------- */
@@ -413,8 +413,8 @@
     /* -------- skills & tech -------- */
     {
       asks: ["what is his stack", "skills", "technologies", "what languages does he know", "what tools does he use", "tech stack", "does he know react", "does he know typescript", "does he know javascript"],
-      keys: ["stack", "skills", "technology", "technologies", "tools", "languages", "python", "react", "typescript", "javascript", "nextjs", "tailwind", "unity", "flutter", "firebase", "supabase", "aws", "three"],
-      a: "Twelve on the wall: Python, TypeScript, React, Next.js, Tailwind CSS, Three.js, Unity, Flutter, Firebase, Supabase, AWS and GitHub — that's the About page's Stack panel. Behind the projects: PySide6 desktop UI and Sentinel-2 remote sensing.",
+      keys: ["stack", "skills", "technology", "technologies", "tools", "languages", "python", "react", "typescript", "javascript", "nextjs", "tailwind", "roblox", "flutter", "firebase", "supabase", "aws", "three"],
+      a: "Twelve on the wall: Python, TypeScript, React, Next.js, Tailwind CSS, Three.js, Roblox Studio, Flutter, Firebase, Supabase, AWS and GitHub — that's the About page's Stack panel. Behind the projects: PySide6 desktop UI and Sentinel-2 remote sensing.",
       page: { href: "about.html", label: "See About → Stack" },
       follow: ["Does he know machine learning?", "What is his best project?"]
     },
@@ -677,7 +677,7 @@
     {
       asks: ["what are the stickers", "the draggable stickers on about", "stack stickers"],
       keys: ["stickers", "sticker"],
-      a: "The About page's Stack panel — twelve draggable tech stickers: Python, TypeScript, React, Next.js, Tailwind CSS, Three.js, Unity, Flutter, Firebase, Supabase, AWS and GitHub. Fling them around; the reset arrow tidies up."
+      a: "The About page's Stack panel — twelve draggable tech stickers: Python, TypeScript, React, Next.js, Tailwind CSS, Three.js, Roblox Studio, Flutter, Firebase, Supabase, AWS and GitHub. Fling them around; the reset arrow tidies up."
     },
     {
       asks: ["why does the photo reveal", "how does the reveal work", "why pixel art", "how does the portrait work", "why does the face follow"],
