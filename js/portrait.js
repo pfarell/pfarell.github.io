@@ -11,7 +11,10 @@
   const real = card.querySelector(".portrait-real");
   const ctx = canvas.getContext("2d");
   const art = new Image();
-  art.src = "assets/img/portrait-pixel.png";
+  const SCRIPT_BASE = (document.currentScript && document.currentScript.src
+    ? document.currentScript.src.replace(/[^/]*$/, "")
+    : "");
+  art.src = SCRIPT_BASE + "../assets/img/portrait-pixel.png";
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function draw() {
