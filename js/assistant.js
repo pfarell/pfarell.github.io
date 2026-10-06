@@ -891,7 +891,7 @@
   })();
 
   function fuzzyToken(tok) {
-    if (tok.length < 5) return null;
+    if (tok.length < 4) return null;
     for (var i = 0; i < DICTIONARY.length; i++) {
       var d = DICTIONARY[i];
       var max = d.length >= 7 && tok.length >= 7 ? 2 : 1;
