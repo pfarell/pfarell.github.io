@@ -52,13 +52,15 @@
   }
 
   /* ---------- sky parallax ---------- */
-  const skyImg = document.getElementById("sky-img");
-  if (skyImg && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const skyEls = document.querySelectorAll(".sky-day, .sky-night");
+  if (skyEls.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     window.addEventListener(
       "scroll",
       function () {
         const y = Math.min(window.scrollY * 0.22, 90);
-        skyImg.style.transform = "translateY(" + y.toFixed(1) + "px)";
+        skyEls.forEach(function (el) {
+          el.style.transform = "translateY(" + y.toFixed(1) + "px)";
+        });
       },
       { passive: true }
     );
@@ -163,16 +165,18 @@
   if (panel) {
     const items = Array.prototype.slice.call(panel.querySelectorAll(".sticker"));
     const FR = [
-      [0.02, 0.42, -6],
-      [0.24, 0.5, 4],
-      [0.06, 0.7, -4],
-      [0.36, 0.14, -30],
-      [0.47, 0.42, -5],
-      [0.52, 0.62, 5],
-      [0.62, 0.24, -12],
-      [0.74, 0.45, 10],
-      [0.83, 0.2, -12],
-      [0.8, 0.62, 3]
+      [0.02, 0.46, -6],
+      [0.20, 0.62, 5],
+      [0.10, 0.26, -4],
+      [0.32, 0.42, -28],
+      [0.42, 0.14, -5],
+      [0.52, 0.56, 6],
+      [0.58, 0.24, -12],
+      [0.70, 0.46, 10],
+      [0.78, 0.18, -12],
+      [0.80, 0.66, 3],
+      [0.90, 0.30, -8],
+      [0.64, 0.76, -16]
     ];
     const S = items.map(function () {
       return { x: 0, y: 0, vx: 0, vy: 0, a: 0, va: 0, w: 0, h: 0, dragging: false };

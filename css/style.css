@@ -291,6 +291,18 @@ button {
   will-change: transform;
 }
 
+.sky img.sky-day {
+  transition: opacity 0.9s ease;
+}
+
+.sky img.sky-night {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
 .sky-fade {
   position: absolute;
   inset: 0;
@@ -380,12 +392,20 @@ html.dark {
   color-scheme: dark;
 }
 
-html.dark .sky img {
-  filter: brightness(0.55) saturate(0.9);
+html.dark .sky img.sky-day {
+  opacity: 0;
 }
 
-html.dark .connect-band img {
-  filter: brightness(0.45) saturate(0.8) blur(3px);
+html.dark .sky img.sky-night {
+  opacity: 1;
+}
+
+html.dark .connect-band img.connect-day {
+  opacity: 0;
+}
+
+html.dark .connect-band img.connect-night {
+  opacity: 1;
 }
 
 html.dark .portrait-hint {
@@ -1177,6 +1197,17 @@ html.dark .polaroid {
   filter: blur(3px) saturate(1.05);
 }
 
+.connect-band img.connect-day {
+  transition: opacity 0.9s ease;
+}
+
+.connect-band img.connect-night {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
 .connect-band::after {
   content: "";
   position: absolute;
@@ -1522,6 +1553,10 @@ html.dark .polaroid {
   font-size: 18px;
 }
 
+.sticker-glyph img {
+  display: block;
+}
+
 .rows-panel {
   display: flex;
   flex-direction: column;
@@ -1605,6 +1640,16 @@ html.dark .polaroid {
   height: 20px;
   object-fit: contain;
   display: block;
+}
+
+.row-link {
+  color: var(--primary-7);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.row-link:hover {
+  text-decoration: underline;
 }
 
 .row-main {
