@@ -613,7 +613,7 @@
     {
       asks: ["quote", "his inspiration", "motto", "what inspires him"],
       keys: ["quote", "inspiration", "motto", "inspires"],
-      a: "\"Do not claim more than the data supports.\" — the rule behind Ripple, and how he says he tries to build.",
+      a: "\"If you don't sacrifice what you want, what you want becomes the sacrifice.\" — the line he keeps under Inspiration on the About page.",
       page: { href: "about.html", label: "See it on the About page" }
     },
 
@@ -716,7 +716,7 @@
     {
       asks: ["what is on the about page", "about page content"],
       keys: ["aboutpage"],
-      a: "Polaroids, his bio, What I do, the draggable Stack, Education at Purdue, and the Ripple quote — \"Do not claim more than the data supports.\"",
+      a: "Polaroids, his bio, What I do, the draggable Stack, Education at Purdue, and the Inspiration quote — \"If you don't sacrifice what you want, what you want becomes the sacrifice.\"",
       page: { href: "about.html", label: "Open About" }
     },
     {
@@ -797,7 +797,7 @@
     {
       asks: ["what is the answer to life", "42"],
       keys: ["42"],
-      a: "42. And according to this site, the real answer might be \"do not claim more than the data supports.\" 😄"
+      a: "42. And according to this site, the real answer might be \"if you don't sacrifice what you want, what you want becomes the sacrifice.\" 😄"
     },
     {
       asks: ["hello world", "print hello world", "say hello world"],
