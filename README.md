@@ -39,15 +39,28 @@ Or just double-click `index.html` — everything is local (fonts, images, script
 ## Wanderly — the assistant (bottom-right)
 
 Click the chat bubble to talk to **Wanderly**, a **fully offline assistant** about Farell —
-no API keys, no network calls. It is a hand-written knowledge base of **121 intents** plus a
-matching engine (`js/assistant.js`): normalize → plural-fold/synonyms → fuzzy spell-fix
-(Levenshtein, so "edution" works) → phrase/topic scoring → tiered fallback (questions about
-unknown tech still get an honest, useful answer instead of a shrug).
+no API keys, no network calls. It is a hand-written knowledge base of **135 intents**
+(573 ask/nav patterns) plus a matching engine (`js/assistant.js`).
 
-Coverage: identity, projects in depth (OpenVoice & Ripple mechanics, benchmarks, licenses),
-skills/tech (with honest "not public" answers), contact, philosophy, this site and its design,
-page navigation ("take me to projects") and meta/fun questions. Replies stream word-by-word
-with typing dots; link buttons and page buttons are rendered inside answers.
+Understanding pipeline: normalize → plural-fold + synonyms → fuzzy spell-fix
+(Levenshtein, so "edution" and "stak" work) → phrase/topic scoring with
+**pronoun-aware boosts** ("you" → assistant topics, "he/him" → Farell topics) →
+tiered fallback (a **"did you mean…?" flow** with buttons, then an honest
+topic-shaped answer for unknown tech).
+
+Awareness & conversation:
+- **Context memory** — "tell me more" expands the last topic (or picks a related
+  one); repeating a question is noticed; follow-up question buttons appear after
+  major answers.
+- **Page awareness** — "where am I?" answers with the page you're actually on.
+- **Time-aware greetings** — "good morning" knows what time it is.
+- **Assistant identity family** — model, creator, "are you ChatGPT/Claude/Gemini",
+  API-key questions all answered honestly (there's no model — it's a scripted KB).
+
+Coverage: identity, projects in depth, skills/tech (with honest "not public" answers),
+contact, philosophy, this site and its design, page navigation ("take me to projects"),
+and meta/fun questions. Replies stream word-by-word with typing dots; link buttons,
+page buttons and follow-up buttons are rendered inside answers.
 
 ## Dark mode
 

@@ -62,7 +62,9 @@
     {
       asks: ["how old are you", "when were you created", "when were you built"],
       keys: ["age-you"],
-      a: "I was born the day this site was built — I ship with it, version by version. Currently: 135 intents and counting."
+      dyn: function () {
+        return "I was born the day this site was built — I ship with it, version by version. Currently: " + KB.length + " intents and counting.";
+      }
     },
     {
       asks: ["do you know everything about him", "do you know everything", "are you omniscient"],
@@ -130,7 +132,7 @@
     {
       asks: ["what does he do", "what does farell do", "his background", "what is he into", "what is he working on", "what can he do", "what are his skills", "what is he good at", "his abilities", "what are his abilities"],
       keys: ["does", "background", "focus", "working", "interesting", "builds", "capable", "abilities", "ability"],
-      a: "His two public projects sum it up best:\n🎙️ OpenVoice — a fully local push-to-talk dictation app for Windows\n🌊 Ripple — a satellite water-quality forecast map with a grounded assistant\nUnder the hood that's Python, React/TypeScript, PySide6, speech models and Sentinel-2 satellite data.",
+      a: "His three public projects sum it up best:\n🎙️ OpenVoice — a fully local push-to-talk dictation app for Windows\n🌊 Ripple — a satellite water-quality forecast map with a grounded assistant\n🎮 Chorémon — an AR + AI chore game, MLH Best Use of Gemini API at Hack Indy 2026\nUnder the hood that's Python, React/TypeScript, PySide6, speech models, Sentinel-2 satellite data, Unity and Three.js.",
       links: [{ t: "GitHub", h: "https://github.com/pfarell" }],
       page: { href: "projects.html", label: "See his Projects" },
       follow: ["What is OpenVoice?", "What is Ripple?"]
@@ -212,7 +214,7 @@
     {
       asks: ["projects", "what has he built", "show me his work", "what did he make", "his work", "what did he build", "portfolio"],
       keys: ["projects", "work", "built", "build", "made", "make", "apps", "portfolio"],
-      a: "Two main public projects:\n• OpenVoice — fully local push-to-talk dictation for Windows 🎙️\n• Ripple — a satellite water-quality forecast map with a grounded AI assistant 🌊\nAsk me about either one, or open the Projects page.",
+      a: "Three main public projects:\n🎙️ OpenVoice — fully local push-to-talk dictation for Windows\n🌊 Ripple — a satellite water-quality forecast map with a grounded AI assistant\n🎮 Chorémon — an AR + AI chore game that won MLH's Best Use of Gemini API at Hack Indy 2026\nAsk me about any of them, or open the Projects page.",
       links: [{ t: "GitHub", h: "https://github.com/pfarell" }],
       page: { href: "projects.html", label: "Open Projects" },
       nav: ["go to projects", "open projects", "show me the projects", "projects page", "take me to projects"],
@@ -221,7 +223,7 @@
     {
       asks: ["latest project", "newest project", "what is his latest project", "recent work", "what is he working on now", "latest work"],
       keys: ["latest", "newest", "recent"],
-      a: "His most recent public work: OpenVoice (released September 2026) — local Windows dictation — and Ripple (2026), the satellite water-quality map with its grounded assistant.",
+      a: "His most recent public work: OpenVoice (September 2026) — local Windows dictation — Ripple (2026), the satellite water-quality map, and Chorémon (March 2026), the AR chore game that won MLH's Best Use of Gemini API at Hack Indy 2026.",
       page: { href: "projects.html", label: "See Projects" }
     },
     {
@@ -258,9 +260,21 @@
       ]
     },
     {
-      asks: ["choremon", "what is choremon"],
+      asks: ["choremon", "chorémon", "choremon project", "what is choremon"],
       keys: ["choremon"],
-      a: "choremon is an empty public repo right now — no code shipped yet. I'd rather tell you that than invent something."
+      a: "Chorémon is a gamified AR chores app he built with Winner R. Rasendriya at Hack Indy 2026 — it won MLH's Best Use of Gemini API. 🏆 AI vision finds the mess, a snarky raccoon named Rascal keeps you moving, and two AR modes turn cleaning into a game: WebXR coin-collecting and a Unity/ARCore tile grid.",
+      more: "The AI is a fallback chain — Gemini → fine-tuned Gemma on Featherless → OpenRouter → NVIDIA Nemotron — with mock data as the last resort so the demo never dies.",
+      links: [
+        { t: "Live demo", h: "https://choremon-six.vercel.app" },
+        { t: "GitHub", h: "https://github.com/pfarell/choremon" },
+        { t: "Devpost", h: "https://devpost.com/software/choremon" }
+      ],
+      follow: ["What did he win?", "What is OpenVoice?"]
+    },
+    {
+      asks: ["does he know unity", "does he know ar", "unity experience", "augmented reality experience", "does he know three.js", "webxr"],
+      keys: ["unity", "arcore", "webxr", "three.js"],
+      a: "Yes — Chorémon ships two AR modes: a WebXR + Three.js coin mode that runs in any AR-capable Android browser, and a Unity + ARCore \"tile mode\" that maps a room's floor into a grid you clean in real time. No MacBook in the team, so iOS goes through Mozilla's XRViewer."
     },
 
     /* -------- OpenVoice deep dive -------- */
@@ -396,7 +410,7 @@
     {
       asks: ["what is his stack", "skills", "technologies", "what languages does he know", "what tools does he use", "tech stack", "does he know react", "does he know typescript", "does he know javascript"],
       keys: ["stack", "skills", "technology", "technologies", "tools", "languages", "python", "react", "typescript", "javascript"],
-      a: "Python, React and TypeScript, PySide6 (Qt), faster-whisper, tool-calling agents, and remote sensing with Sentinel-2 data. He also cares a lot about data visualization and interface polish.",
+      a: "Python, React and TypeScript, PySide6 (Qt), faster-whisper, tool-calling agents, remote sensing with Sentinel-2 — plus graphic design, Flutter/Dart, Firebase, and AR work with Unity and Three.js.",
       page: { href: "about.html", label: "See About → Stack" },
       follow: ["Does he know machine learning?", "What is his best project?"]
     },
@@ -413,12 +427,12 @@
     {
       asks: ["database", "does he know database", "sql", "postgres", "mongodb", "sqlite", "does he know anything about database"],
       keys: ["database", "sql", "postgres", "mongodb", "sqlite", "db"],
-      a: "Nothing public mentions databases — Ripple serves precomputed records rather than a live DB, and OpenVoice is fully local. What is public: Python data pipelines, React/TypeScript frontends, and an on-device speech model."
+      a: "No SQL database work is public — but Supabase and Cloud Firestore are on his LinkedIn skills, and Chorémon keeps its XP, streaks and leaderboard in Firebase."
     },
     {
       asks: ["flutter", "does he know flutter", "can he do flutter", "mobile app", "android", "ios", "swift", "kotlin"],
       keys: ["flutter", "dart", "mobile", "android", "ios", "swift", "kotlin"],
-      a: "Nothing public mentions Flutter or native mobile development. What is public: a Windows desktop app (OpenVoice) and a React web app with a phone layout (Ripple)."
+      a: "Yes — Flutter and Dart are on his LinkedIn skills list, alongside Firebase and Cloud Firestore. His public repos happen to be Python and TypeScript, so most of what you can read is backend/web; Chorémon's stack includes the mobile-grade web app."
     },
     {
       asks: ["c++", "java", "rust", "golang"],
@@ -534,13 +548,32 @@
     },
     {
       asks: ["does he have a job", "work experience", "internship", "experience", "where has he worked", "employment", "is he looking for internships"],
-      keys: ["experience", "job", "intern", "internship", "employment", "worked", "company"],
-      a: "No work experience is listed — the About page only covers his studies at Purdue and his side projects. Whether he's internship-hunting isn't public either; the site just says he's open to opportunities."
+      keys: ["experience", "intern", "internship", "employment", "worked", "company"],
+      a: "Yes — he's a Creative Graphic Designer at PERMIAS Purdue (part-time, since August 2026), designing graphics and promotional materials for their events and keeping social content on-brand. Before that he volunteered at Fairlight Edu (Sep–Nov 2024) as Head of Finance, teacher and IT support.",
+      page: { href: "about.html", label: "See About → Experience" }
     },
     {
-      asks: ["awards", "did he win anything", "prizes", "winner"],
+      asks: ["does he work at permias", "what is permias", "his current job", "where does he work", "is he working"],
+      keys: ["permias"],
+      a: "PERMIAS Purdue is the Indonesian student association at Purdue — and he's their Creative Graphic Designer (part-time, since August 2026). Event graphics, promotional materials, social content.",
+      page: { href: "about.html", label: "See About → Experience" }
+    },
+    {
+      asks: ["volunteering", "does he volunteer", "fairlight", "fairlight edu", "what is fairlight"],
+      keys: ["volunteer"],
+      a: "He volunteered at Fairlight Edu (Sep–Nov 2024) as Head of Finance, teacher and IT support — managing financial planning and budgeting for their educational initiatives."
+    },
+    {
+      asks: ["does he have certifications", "his certifications", "is he aws certified", "aws certification", "generative ai course", "google ai studio certification", "what certificates does he have"],
+      keys: ["certification", "certifications", "certified", "certificate"],
+      a: "Four certifications: AWS Certified Machine Learning – Specialty (MLS-C01) with a Data Engineering focus (Oct 2025); Career Essentials in Generative AI from Microsoft & LinkedIn (Oct 2025); Develop AI-Powered Prototypes in Google AI Studio from Google (Sep 2025); and What Is Generative AI? from LinkedIn (Sep 2025).",
+      page: { href: "about.html", label: "See About → Certifications" }
+    },
+    {
+      asks: ["awards", "did he win anything", "prizes", "winner", "what did he win", "has he won anything"],
       keys: ["awards", "award", "prize", "won", "winner"],
-      a: "No awards are listed on this site."
+      a: "🏆 Chorémon won MLH's \"Best Use of Gemini API\" at Hack Indy 2026 — his AR + AI chore game built with Winner R. Rasendriya. That's the one on the record.",
+      page: { href: "projects.html", label: "See it on Projects" }
     },
     {
       asks: ["is he open to work", "is he available", "opportunities", "collaborate with him", "can i hire him", "does he freelance"],
@@ -551,7 +584,7 @@
     {
       asks: ["is he a good hire", "should i hire him"],
       keys: ["good", "hire-him"],
-      a: "I'm biased — but the receipts are public: two MIT projects, 293 tests, benchmarks against published numbers, and validation against 135 real USGS gauge pairs. Read the repos and judge.",
+      a: "I'm biased — but the receipts are public: three shipped projects, two of them MIT with 293 tests and USGS-validated benchmarks, plus Chorémon, which won MLH's Best Use of Gemini API at Hack Indy 2026. Read the repos and judge.",
       links: [{ t: "github.com/pfarell", h: "https://github.com/pfarell" }]
     },
     {
@@ -685,7 +718,7 @@
     {
       asks: ["what is on the projects page", "projects page content"],
       keys: ["projectspage"],
-      a: "Two project cards with real screenshots: OpenVoice (local dictation) and Ripple (satellite water quality), each with repo links.",
+      a: "Three project cards with real screenshots: OpenVoice (local dictation), Ripple (satellite water quality) and Chorémon (the award-winning AR chore game), each with repo links.",
       page: { href: "projects.html", label: "Open Projects" }
     },
     {
@@ -780,13 +813,13 @@
     {
       asks: ["what is his best project", "which project is his favourite", "best project"],
       keys: ["best"],
-      a: "I won't speak for him — but if you want my (biased) pick: OpenVoice. \"Your audio never leaves the machine\" is a bold rule to build an entire app around.",
+      a: "I won't speak for him — but two candidates: OpenVoice (\"your audio never leaves the machine\" is a bold rule to build an entire app around) and Chorémon, the AR chore game that won MLH's Best Use of Gemini API at Hack Indy 2026.",
       follow: ["What is OpenVoice?", "What is Ripple?"]
     },
     {
       asks: ["is he smart", "is he talented", "tell me something nice about him"],
       keys: ["smart", "talented", "nice"],
-      a: "Two MIT projects shipped while studying AI — one with 293 tests and honest benchmarks, one validated against 135 real USGS gauge pairs. Judge for yourself; the repos are public.",
+      a: "Two MIT projects shipped while studying AI — one with 293 tests, one validated against 135 real USGS gauge pairs — plus an award-winning AR game from Hack Indy 2026. Judge for yourself; the repos are public.",
       links: [{ t: "github.com/pfarell", h: "https://github.com/pfarell" }]
     },
     {

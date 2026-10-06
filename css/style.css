@@ -1480,6 +1480,53 @@ html.dark .polaroid {
   gap: 10px;
 }
 
+.row-item.xp { align-items: flex-start; }
+
+.xp-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.xp-head {
+  display: flex;
+  align-items: baseline;
+  gap: 6px 16px;
+  flex-wrap: wrap;
+}
+
+.xp-list {
+  margin: 4px 0 0 18px;
+  color: var(--muted-fg);
+  font-size: 15px;
+  line-height: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skills-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skills-group + .skills-group {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+.skills-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--subtle);
+}
+
 .row-item {
   display: flex;
   align-items: center;
