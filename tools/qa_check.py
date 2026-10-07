@@ -286,6 +286,20 @@ with sync_playwright() as p:
                 "pass": len(clipped) == 0,
             }
         )
+        # minimum gutter: catches shorthand padding rules silently zeroing
+        # the .container side padding (regression seen 2026-10-06)
+        gutter = pg.evaluate(
+            "() => { const c = document.querySelector('.container'); return c ? parseFloat(getComputedStyle(c).paddingLeft) : null; }"
+        )
+        report.append(
+            {
+                "page": path,
+                "viewport": 390,
+                "test": "container side gutter >= 16px at phone width",
+                "padding_left": gutter,
+                "pass": gutter is not None and gutter >= 16,
+            }
+        )
     browser.close()
 
 print(json.dumps(report, indent=1))
