@@ -706,15 +706,16 @@ html.dark .polaroid {
 }
 
 .section {
-  padding: 48px 0;
+  padding-top: 48px;
+  padding-bottom: 48px;
 }
 
 @media (min-width: 768px) {
-  .section { padding: 64px 0; }
+  .section { padding-top: 64px; padding-bottom: 64px; }
 }
 
 @media (min-width: 1024px) {
-  .section { padding: 80px 0; }
+  .section { padding-top: 80px; padding-bottom: 80px; }
 }
 
 .hero {
