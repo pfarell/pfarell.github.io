@@ -93,14 +93,23 @@
     let index = 0;
     let drag = null;
 
+    function fanParams() {
+      const w = window.innerWidth;
+      if (w <= 560) return { x: 10, y: 6, r: 0 };
+      if (w <= 767) return { x: 12, y: 8, r: 3 };
+      const k = Math.min(1, stack.clientWidth / 430);
+      return { x: 18 * k, y: 12 * k, r: 5 * k };
+    }
+
     function place(animate) {
+      const f = fanParams();
       cards.forEach(function (c, i) {
         const off = (i - index + n) % n;
         c.style.transition = animate
           ? "transform .5s cubic-bezier(.22,1,.36,1), opacity .4s ease"
           : "none";
         c.style.transform =
-          "translate3d(" + off * 18 + "px," + off * 12 + "px,0) rotate(" + off * 5 + "deg)";
+          "translate3d(" + off * f.x + "px," + off * f.y + "px,0) rotate(" + off * f.r + "deg)";
         c.style.zIndex = String(n - off);
         c.style.opacity = off > 2 ? "0" : "1";
         c.classList.toggle("is-under", off > 0);
@@ -156,6 +165,8 @@
       if (e.key === "ArrowRight") { e.preventDefault(); fling(1); }
       if (e.key === "ArrowLeft") { e.preventDefault(); fling(-1); }
     });
+
+    window.addEventListener("resize", function () { place(false); });
 
     place(false);
   }

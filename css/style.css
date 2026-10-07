@@ -1734,6 +1734,46 @@ html.js [data-reveal].in {
 [data-reveal-delay="2"] { transition-delay: 0.16s; }
 [data-reveal-delay="3"] { transition-delay: 0.24s; }
 
+/* ---------------- small-screen spacing & card-stack fit ---------------- */
+
+@media (max-width: 767px) {
+  .container,
+  .container-wide {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (max-width: 560px) {
+  /* keep the fanned philosophy stack fully inside the viewport:
+     narrower stack + smaller fan (the fan scales with width in app.js) */
+  .card-stack {
+    max-width: min(430px, calc(100vw - 96px));
+    height: 404px;
+  }
+
+  .phil-card {
+    padding: 24px;
+    gap: 14px;
+    border-radius: 22px;
+  }
+
+  .phil-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+  }
+
+  .phil-num {
+    font-size: 42px;
+  }
+
+  .panel {
+    padding: 20px;
+    border-radius: 26px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html.js [data-reveal] { opacity: 1; transform: none; filter: none; transition: none; }
   html { scroll-behavior: auto; }
