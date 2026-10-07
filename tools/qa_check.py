@@ -253,6 +253,39 @@ with sync_playwright() as p:
             "pass": s_before != s_after,
         }
     )
+
+    # edge audit at phone width: body{overflow-x:hidden} can hide clipped content,
+    # so scrollWidth==innerWidth is not enough — measure element edges directly.
+    edge_js = """() => {
+        const vw = window.innerWidth;
+        const bad = [];
+        const skips = ['.connect-band', '.polaroid-strip', '.assistant-chips', '.assistant-log', '.portrait-card', '.sky'];
+        for (const el of document.querySelectorAll('body *')) {
+            const r = el.getBoundingClientRect();
+            if (r.width === 0 || r.height === 0) continue;
+            const cs = getComputedStyle(el);
+            if (cs.position === 'fixed' || cs.display === 'none' || cs.visibility === 'hidden') continue;
+            let skip = false;
+            for (const s of skips) if (el.closest(s)) { skip = true; break; }
+            if (skip) continue;
+            if (r.right > vw + 0.5 || r.left < -0.5) bad.push(el.tagName + '.' + (el.className || '').toString().slice(0, 40));
+        }
+        return bad;
+    }"""
+    for path in ["index.html", "about/", "projects/"]:
+        pg.goto(BASE + path, wait_until="networkidle")
+        pg.set_viewport_size({"width": 390, "height": 844})
+        pg.wait_for_timeout(1200)
+        clipped = pg.evaluate(edge_js)
+        report.append(
+            {
+                "page": path,
+                "viewport": 390,
+                "test": "no content clipped at phone width (edge audit)",
+                "clipped": clipped[:6],
+                "pass": len(clipped) == 0,
+            }
+        )
     browser.close()
 
 print(json.dumps(report, indent=1))
